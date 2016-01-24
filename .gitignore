@@ -1,0 +1,19 @@
+# Python binaries
+*.py[cod]
+ 
+# Temporary GNU Emacs files
+*~
+[#]*[#]
+.\#*
+
+# PyCharm settings
+.idea/
+
+# Sphinx build folder
+docs/_build
+
+# OS generated files
+.DS_Store?
+
+# Database
+posttls/config/db.sqlite3

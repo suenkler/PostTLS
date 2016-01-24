@@ -1,0 +1,56 @@
+{% extends "core/base.html" %}
+{% load staticfiles %}
+
+{% block title %}PostTLS - Postfix's Transport Encryption under Control of the User{% endblock %}
+
+{% block additional_css %}
+<style>
+    h1 {
+        font-size: 60px;
+        color: #000079;
+        margin-top: 50px;
+    }
+    hr {
+        height: 1px;
+        width: 50%;
+        color: #cdcdcd;
+    }
+    #subtitle {
+        font-size: 28px;
+        color: #3a3a3a;
+        margin-top: 0px;
+        margin-bottom: 10px;
+    }
+    #link_to_project_website {
+        margin-top: 50px;
+        font-size: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block page_content %}
+
+<!-- Fork me on GitHub Link -->
+<a href="https://github.com/suenkler"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+<div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+
+        <center>
+            <h1>PostTLS</h1>
+            <hr>
+            <div id="subtitle">– Postfix's Transport Encryption under Control of the User –</div>
+
+            <div id="link_to_project_website">Please find the project page of PostTLS at <a href="https://posttls.com">posttls.com</a>.</div>
+        </center>
+
+    </div>
+    <div class="col-lg-1"></div>
+</div>
+
+{% endblock %}
+
+{% block additional_js %}
+    {{ block.super }}
+{% endblock %}

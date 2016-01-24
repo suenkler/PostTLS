@@ -1,0 +1,60 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<div lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    {# Bootstrap #}
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    {# Font Awesome #}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    {# Custom CSS #}
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    {# ============================= additional css ================================= #}
+    {% block additional_css %}
+    {% endblock %}
+    {# ============================================================================== #}
+
+    {# Animations #}
+    <link rel="stylesheet" href="{% static 'vendor/animate.min.css' %}">
+
+    {# Fonts #}
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,100,300,200,500,600,700' rel='stylesheet' type='text/css'>
+
+    {# even support old crappy Internet Explorer #}
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+{# ================================= main page content =================================== #}
+<div class="container">
+
+    {% block page_content %}{% endblock %}
+
+</div>
+{# ======================================================================================== #}
+
+{# jQuery #}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+{# ============================= Additional javascript ============================== #}
+{% block additional_js %}
+    {{ block.super }}
+{% endblock %}
+{# ================================================================================== #}
+
+{# bootstrap minified javascript #}
+<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>

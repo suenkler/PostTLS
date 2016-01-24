@@ -1,0 +1,45 @@
+{% extends "core/base.html" %}
+{% load staticfiles %}
+
+{% block title %}PostTLS - Success!{% endblock %}
+
+{% block additional_css %}
+<style>
+    h1 {
+        margin-top: 20px;
+    }
+    #message {
+        margin-top: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block page_content %}
+
+<style>
+</style>
+
+<div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+
+        <div style="margin-top: 50px; width: 100%; text-align: center;">
+            <i class="fa fa-check" style="color: #07ad02; font-size: 50px; text-align: center;"></i>
+        </div>
+
+        <center>
+            {% if action == "delete" %}
+            <h1>Email deleted successfully</h1>
+            <p id="message">Thank you! Your message was successfully deleted.</p>
+
+            {% elif action == "redirect" %}
+            <h1>Email sent unencrypted</h1>
+            <p id="message">Thank you! Your message was delivered unencrypted.</p>
+            {% endif %}
+        </center>
+
+    </div>
+    <div class="col-lg-2"></div>
+
+</div>
+{% endblock %}
