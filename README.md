@@ -86,6 +86,6 @@ Please note, that you should not use Django's development server in production. 
 Automation
 ----------
 
-You can configure a cron job to process the queue once every minute:
+You can configure a cron job to process the queue once every minute. To prevent overlapping of cron jobs, use the [flock](http://linux.die.net/man/1/flock) command:
 
-    */1 * * * * . /home/hendrik/apps/posttls/env.sh && /home/hendrik/.virtualenvs/posttls/bin/python3 /home/hendrik/apps/posttls/posttls/posttls/manage.py process_queue >/dev/null 2>&1
+    */1 * * * * . /home/hendrik/apps/posttls/env.sh && /usr/bin/flock -w 0 /home/hendrik/apps/posttls/cron.lock /home/hendrik/.virtualenvs/posttls/bin/python3 /home/hendrik/apps/posttls/posttls/posttls/manage.py process_queue >/dev/null 2>&1
