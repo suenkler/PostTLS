@@ -13,16 +13,23 @@
                 <li style='font-size: 14px;'>Subject: {{ subject }}</li>
             </ul>
 
-            <p style="font-size: 14px;">Please tell me how you want me to handle this case:</p>
+            {% if deleted %}
+                <p style="font-size: 14px;">Since our company policy requires TLS
+                    encryption for the recipient(s) mentioned above, your mail was deleted.
+                    Please find a different - and secure - channel for communication.</p>
+            {% else %}
 
-            <p>
-                <a href='https://{{postfix_tls_host}}:8080/?queue_id={{queue_id}}&action=redirect' style='text-decoration: none;'>
-                    <button style="font-size: 14px; color: white; cursor: pointer; margin-left: 0px; margin-top: 10px; color: white; border: 0; border-radius: 4px; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); background: rgb(223, 166, 53); padding: 10px;">Send unencrypted</button>
-                </a>
-                <a href='https://{{postfix_tls_host}}:8080/?queue_id={{queue_id}}&action=delete' style='text-decoration: none;'>
-                    <button style="font-size: 14px; color: white; cursor: pointer; margin-left: 0px; margin-top: 10px; color: white; border: 0; border-radius: 4px; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); background: rgb(28, 184, 65); padding: 10px;">Delete message</button>
-                </a>
-            </p>
+                <p style="font-size: 14px;">Please tell me how you want me to handle this case:</p>
+
+                <p>
+                    <a href='https://{{postfix_tls_host}}:8080/?queue_id={{queue_id}}&action=redirect' style='text-decoration: none;'>
+                        <button style="font-size: 14px; color: white; cursor: pointer; margin-left: 0px; margin-top: 10px; color: white; border: 0; border-radius: 4px; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); background: rgb(223, 166, 53); padding: 10px;">Send unencrypted</button>
+                    </a>
+                    <a href='https://{{postfix_tls_host}}:8080/?queue_id={{queue_id}}&action=delete' style='text-decoration: none;'>
+                        <button style="font-size: 14px; color: white; cursor: pointer; margin-left: 0px; margin-top: 10px; color: white; border: 0; border-radius: 4px; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); background: rgb(28, 184, 65); padding: 10px;">Delete message</button>
+                    </a>
+                </p>
+            {% endif %}
 
             <p style='font-size: 14px; margin-top: 25px;'>If you have any questions, please contact your <a href="mailto:{{postfix_sysadmin_mail_address}}" style="color: black;">System Administrator</a>.</p>
         </td>

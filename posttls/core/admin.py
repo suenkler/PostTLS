@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import User, TLSNotification, TLSLogEntry
+from .models import User, TLSNotification, TLSLogEntry, MandatoryTLSDomains
 
 
 # Custom User Model
@@ -20,6 +20,10 @@ class TLSLogEntryAdmin(admin.ModelAdmin):
     list_display = ('queue_id', 'sender', 'recipients', 'action', 'date')
 
 
+class MandatoryTLSDomainsAdmin(admin.ModelAdmin):
+    list_display = ('domain',)
+
+
 admin.site.register(TLSNotification, TLSNotificationAdmin)
 admin.site.register(TLSLogEntry, TLSLogEntryAdmin)
-
+admin.site.register(MandatoryTLSDomains, MandatoryTLSDomainsAdmin)

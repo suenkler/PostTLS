@@ -9,10 +9,15 @@ import sys
 import datetime
 from email.header import decode_header
 
-from core.models import TLSNotification
+from core.models import TLSNotification, MandatoryTLSDomains
 
 
-def send_mail(message):
+def send_mail(message, deleted):
+    """
+    Send mail notification to sender.
+    If the domain of a recipient is listed in MandatoryTLSDomains,
+    the mail was deleted and 'deleted' is set to True.
+    """
     import smtplib
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
@@ -34,7 +39,8 @@ def send_mail(message):
                                      'subject': message['subject'],
                                      'queue_id': message['queue_id'],
                                      'postfix_sysadmin_mail_address': settings.POSTTLS_NOTIFICATION_SYSADMIN_MAIL_ADDRESS,
-                                     'postfix_tls_host': settings.POSTTLS_TLS_HOST})
+                                     'postfix_tls_host': settings.POSTTLS_TLS_HOST,
+                                     'deleted': deleted})
 
     text_content = strip_tags(html_content)  # this strips the html tags
 
@@ -174,28 +180,46 @@ class Command(BaseCommand):
                 # set the subject
                 message['subject'] = str(subject)
 
-                #######################################################################
-                # Send notification and handle database entry
+                ###################################################################
+                # If the domain is listed in MandatoryTLSDomains, delete the mail and inform the sender
+                mandatory_tls = False
+                mandatory_tls_domains = MandatoryTLSDomains.objects.all()
+                for domain in mandatory_tls_domains:
+                    if domain.domain in message["recipients"]:
+                        mandatory_tls = True
 
-                # Check the database if an earlier notification was already sent
-                try:
-                    notification = TLSNotification.objects.get(queue_id=message["queue_id"])
-                except:
-                    notification = ""
+                if mandatory_tls:
+                    # delete mail
+                    p = subprocess.Popen(['sudo', 'postsuper', '-d', message['queue_id']],
+                                         stdin=subprocess.PIPE,
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.STDOUT)
+                    output = str(p.stdout.read(), "utf-8").splitlines()
 
-                if not notification:
-                    # If this is the first notification, send it and make a database entry
-                    n = TLSNotification(queue_id=message["queue_id"], notification=datetime.datetime.today())
-                    n.save()
-                    send_mail(message)
-                else:
-                    # If the last notification is more than 30 minutes ago,
-                    # send another notification
-                    if notification.notification.replace(tzinfo=None) \
-                            < datetime.datetime.today() - datetime.timedelta(minutes=30):
-                        notification.delete()
+                    # send notification to sender
+                    send_mail(message, deleted=True)
+
+                else:  # if not mandatory_tls
+                    #######################################################################
+                    # Send notification and handle database entry
+
+                    # Check the database if an earlier notification was already sent
+                    try:
+                        notification = TLSNotification.objects.get(queue_id=message["queue_id"])
+                    except:
+                        notification = ""
+
+                    if not notification:
+                        # If this is the first notification, send it and make a database entry
                         n = TLSNotification(queue_id=message["queue_id"], notification=datetime.datetime.today())
                         n.save()
-                        send_mail(message)
-
-        self.stdout.write('Successfully processed Postfix Queue!')
+                        send_mail(message, deleted=False)
+                    else:
+                        # If the last notification is more than 30 minutes ago,
+                        # send another notification
+                        if notification.notification.replace(tzinfo=None) \
+                                    < datetime.datetime.today() - datetime.timedelta(minutes=30):
+                            notification.delete()
+                            n = TLSNotification(queue_id=message["queue_id"], notification=datetime.datetime.today())
+                            n.save()
+                            send_mail(message, deleted=False)

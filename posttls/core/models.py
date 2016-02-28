@@ -33,3 +33,12 @@ class TLSLogEntry(models.Model):
 
     def __str__(self):
         return self.queue_id
+
+
+class MandatoryTLSDomains(models.Model):
+    """For these domains the user shouln't be allowed to send emails unencrypted"""
+
+    domain = models.CharField('Domain', max_length=100)
+
+    def __str__(self):
+        return self.domain
