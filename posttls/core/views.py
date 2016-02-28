@@ -2,8 +2,9 @@ import subprocess
 import re
 
 from django.shortcuts import render
+from django.utils import timezone
 
-from core.models import TLSNotification
+from core.models import TLSNotification, TLSLogEntry
 
 
 def mailaction(request):
@@ -69,7 +70,7 @@ def mailaction(request):
         # - the recipients: we do want to send the mail not to all recipients mentioned
         #                   in the header. The mail was already sent to most of the
         #                   recipients. We just want so send the mail to those recipients
-        #                   who did not already get the email since there were errors why
+        #                   who did not already get the email since there were errors so
         #                   the mail was not delivered. These are the recipient lines in
         #                   the envelope!
 
@@ -138,6 +139,14 @@ def mailaction(request):
                              stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         output += str(p.stdout.read(), "utf-8")
+
+        # Create log entry in database
+        q = TLSLogEntry(queue_id=queue_id,
+                        sender=envelope_sender,
+                        action=action,
+                        recipients=recipients,
+                        date=timezone.now())
+        q.save()
 
     ######################################################
     # DELETE MAIL

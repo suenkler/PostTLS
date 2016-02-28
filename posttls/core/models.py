@@ -20,3 +20,16 @@ class TLSNotification(models.Model):
 
     def __str__(self):
         return self.queue_id
+
+
+class TLSLogEntry(models.Model):
+    """Log entries for handled mails (forwarded/deleted)"""
+
+    queue_id = models.CharField('Queue ID', max_length=20)
+    sender = models.CharField('Sender', max_length=255)
+    recipients = models.CharField('Recipients', max_length=255, null=True)
+    action = models.CharField('Action', max_length=100)
+    date = models.DateTimeField('Date')
+
+    def __str__(self):
+        return self.queue_id
