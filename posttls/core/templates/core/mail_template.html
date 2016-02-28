@@ -1,40 +1,46 @@
 <html>
-<body style="background: #eeeeee;">
+<body>
+<div id="mail_body" style="padding: 10px;">
 
-<table style="width: 100%; max-width: 630px; background: white; border: 1px solid #eaeaea; padding: 20px;">
-    <tr>
-        <td>
-            <p style="font-size: 14px; font-weight: bold;">Hi!</p>
-            <p style="font-size: 14px;">This is your mail server. I'm afraid, but I couldn't send the following email to the mentioned recipients securely:</p>
+<!-- Header -->
+<div id="header" style="margin: 0; padding: 0; background: #3f93ad; height: 5px;"></div>
 
-            <ul>
-                <li style='font-size: 14px;'>Recipient(s): {{ recipients }}</li>
-                <li style='font-size: 14px;'>Date: {{ date }}</li>
-                <li style='font-size: 14px;'>Subject: {{ subject }}</li>
-            </ul>
+    <p style="font-size: 14px; font-weight: bold;">Hi!</p>
 
-            {% if deleted %}
-                <p style="font-size: 14px;">Since our company policy requires TLS
-                    encryption for the recipient(s) mentioned above, your mail was deleted.
-                    Please find a different - and secure - channel for communication.</p>
-            {% else %}
+    <p style="font-size: 14px;">This is your mail server. I'm afraid, but I couldn't send the following email to the mentioned recipients securely:</p>
 
-                <p style="font-size: 14px;">Please tell me how you want me to handle this case:</p>
+    <ul>
+        <li style='font-size: 14px;'>Recipient(s): {{ recipients }}</li>
+        <li style='font-size: 14px;'>Date: {{ date }}</li>
+        <li style='font-size: 14px;'>Subject: {{ subject }}</li>
+    </ul>
 
-                <p>
-                    <a href='https://{{postfix_tls_host}}:8080/?queue_id={{queue_id}}&action=redirect' style='text-decoration: none;'>
-                        <button style="font-size: 14px; color: white; cursor: pointer; margin-left: 0px; margin-top: 10px; color: white; border: 0; border-radius: 4px; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); background: rgb(223, 166, 53); padding: 10px;">Send unencrypted</button>
-                    </a>
-                    <a href='https://{{postfix_tls_host}}:8080/?queue_id={{queue_id}}&action=delete' style='text-decoration: none;'>
-                        <button style="font-size: 14px; color: white; cursor: pointer; margin-left: 0px; margin-top: 10px; color: white; border: 0; border-radius: 4px; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); background: rgb(28, 184, 65); padding: 10px;">Delete message</button>
-                    </a>
-                </p>
-            {% endif %}
+    {% if deleted %}
+    <p style="font-size: 14px;">Since our company policy requires TLS
+        encryption for the recipient(s) mentioned above, your mail was deleted.
+        Please find a different - and secure - channel for communication.</p>
+    {% else %}
 
-            <p style='font-size: 14px; margin-top: 25px;'>If you have any questions, please contact your <a href="mailto:{{postfix_sysadmin_mail_address}}" style="color: black;">System Administrator</a>.</p>
-        </td>
-    </tr>
+    <p style="font-size: 14px;">Please tell me how you want me to handle this case:</p>
 
-</table>
+    <p>
+        <a href='https://{{postfix_tls_host}}:8080/?queue_id={{queue_id}}&action=redirect' style='text-decoration: none;'>
+       <button style="font-size: 14px; color: black; cursor: pointer; margin-left: 0px; margin-top: 10px; border: 0; border-radius: 4px; background: rgb(220, 220, 220); padding: 10px;">Send unencrypted</button>
+       </a>
+       <a href='https://{{postfix_tls_host}}:8080/?queue_id={{queue_id}}&action=delete' style='text-decoration: none;'>
+       <button style="font-size: 14px; color: black; cursor: pointer; margin-left: 0px; margin-top: 10px; border: 0; border-radius: 4px; background: rgb(220, 220, 220); padding: 10px;">Delete message</button>
+       </a>
+    </p>
+    {% endif %}
+
+    <p style='font-size: 14px; margin-top: 25px;'>If you have any questions, please contact your <a href="mailto:{{postfix_sysadmin_mail_address}}" style="color: black;">System Administrator</a>.</p>
+
+    <!-- Footer -->
+    <div id="footer" style="font-size: 12px; margin: 0; padding: 0; color: grey;">
+        This message was sent by <a href="https://posttls.com" style="color: grey;">PostTLS</a>.<br>
+        PostTLS is Open Source Software and available under the MIT License.
+    </div>
+
+</div>
 </body>
 </html>
