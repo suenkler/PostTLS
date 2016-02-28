@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.utils import timezone
 
 import subprocess
 import re
@@ -211,15 +212,16 @@ class Command(BaseCommand):
 
                     if not notification:
                         # If this is the first notification, send it and make a database entry
-                        n = TLSNotification(queue_id=message["queue_id"], notification=datetime.datetime.today())
+                        n = TLSNotification(queue_id=message["queue_id"], notification=timezone.now())
                         n.save()
                         send_mail(message, deleted=False)
                     else:
                         # If the last notification is more than 30 minutes ago,
                         # send another notification
-                        if notification.notification.replace(tzinfo=None) \
-                                    < datetime.datetime.today() - datetime.timedelta(minutes=30):
+                        if notification.notification \
+                                < timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone()) \
+                                - datetime.timedelta(minutes=30):
                             notification.delete()
-                            n = TLSNotification(queue_id=message["queue_id"], notification=datetime.datetime.today())
+                            n = TLSNotification(queue_id=message["queue_id"], notification=timezone.now())
                             n.save()
                             send_mail(message, deleted=False)
