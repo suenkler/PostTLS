@@ -60,6 +60,7 @@ export POSTTLS_MEDIA_ROOT_DIR="/home/hendrik/apps/posttls/media/"
 export POSTTLS_ENVIRONMENT_TYPE="development"
 
 # PostTLS settings
+export POSTTLS_NOTIFICATION_SYSADMIN_MAIL_ADDRESS="admin@localhost"
 export POSTTLS_NOTIFICATION_SENDER="postmaster@domain.com (Postmaster)"
 export POSTTLS_NOTIFICATION_SMTP_HOST="localhost"
 
