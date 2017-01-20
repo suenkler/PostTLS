@@ -13,7 +13,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     license='AGPLv3',
-    description='Postfix' Transport Encryption under Control of the User',
+    description="Postfix' Transport Encryption under Control of the User",
     long_description=README.md,
     url='https://posttls.com/',
     author='Hendrik Suenkler',
