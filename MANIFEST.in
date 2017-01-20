@@ -1,0 +1,9 @@
+include LICENSE
+include README.md
+include requirements.txt
+recursive-include posttls/core/static/css *
+recursive-include posttls/core/static/vendor *
+recursive-include posttls/core/static/vendor/bootstrap/css *
+recursive-include posttls/core/static/vendor/bootstrap/fonts *
+recursive-include posttls/core/static/vendor/bootstrap/js *
+recursive-include posttls/core/templates/core *
