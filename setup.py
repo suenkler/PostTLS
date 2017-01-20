@@ -14,7 +14,7 @@ setup(
     include_package_data=True,
     license='AGPLv3',
     description="Postfix' Transport Encryption under Control of the User",
-    long_description=README.md,
+    long_description=README,
     url='https://posttls.com/',
     author='Hendrik Suenkler',
     author_email='hendrik@posttls.com',
