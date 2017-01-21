@@ -1,6 +1,6 @@
 # Python binaries
 *.py[cod]
- 
+
 # Temporary GNU Emacs files
 *~
 [#]*[#]
@@ -17,3 +17,7 @@ docs/_build
 
 # Database
 posttls/config/db.sqlite3
+
+# Source Distribution and respective egg
+dist/
+posttls.egg-info/
