@@ -11,7 +11,7 @@ The code in this repository is licensed under version 3 of the GNU Affero Genera
 Requirements
 ------------
 
-Please be aware that PostTLS right now is in **early stage** and there are quite a few things to prepare on the server to use the software. You should be familiar with Linux system administration and you should know how to run a python program in production. In the following you will find a list of requirements - but this is **not a step-by-step guide to meet these requirements**! Of course, documentation and automation of the installation procedure will be enhanced in the future if there is demand. 
+Please be aware that PostTLS right now is in **early stage** and there are quite a few things to prepare on the server to use the software. You should be familiar with Linux system administration and you should know how to run a python program in production. In the following you will find a list of requirements - but this is **not a step-by-step guide to meet these requirements**! Of course, documentation and automation of the installation procedure will be enhanced in the future if there is demand.
 
 **USE THIS SOFTWARE AT YOUR OWN RISK! AND MAKE SURE YOU UNDERSTAND WHAT IT DOES!**
 
@@ -20,15 +20,15 @@ Make sure to meet the following requirements:
 - Python 3
 - Virtualenv and virtualenvwrapper
 - Two Postfix instances. See [Managing multiple Postfix instances on a single host](http://www.postfix.org/MULTI_INSTANCE_README.html) to find out more about multiple instance support of Postfix.
-  - First instance: Postfix option `smtp_tls_security_level` is set to `encrypt` and implements mandatory TLS for all domains. 
+  - First instance: Postfix option `smtp_tls_security_level` is set to `encrypt` and implements mandatory TLS for all domains.
   - Second instance: Postfix option `smtp_tls_security_level` is set to `may` and implements opportunistic TLS.
 - PostTLS calls some Postfix commands, which should be executable via sudo without password. So add something like this to /etc/sudoers using `sudo visudo`:
 
 ```bash
-# User hendrik can use apps needed for PostTLS
-hendrik ALL = NOPASSWD: /usr/bin/mailq
-hendrik ALL = NOPASSWD: /usr/sbin/postcat
-hendrik ALL = NOPASSWD: /usr/sbin/postsuper
+# User 'developer' can use apps needed for PostTLS
+developer ALL = NOPASSWD: /usr/bin/mailq
+developer ALL = NOPASSWD: /usr/sbin/postcat
+developer ALL = NOPASSWD: /usr/sbin/postsuper
 ```
 
 Installation
@@ -53,13 +53,14 @@ Configuration of PostTLS is done via environment variables. You can use a bash s
 ```bash
 # Django configuration
 export POSTTLS_SECRET_KEY="verysecretkey"
-export POSTTLS_STATIC_ROOT_DIR="/home/hendrik/apps/posttls/static/"
-export POSTTLS_MEDIA_ROOT_DIR="/home/hendrik/apps/posttls/media/"
+export POSTTLS_STATIC_ROOT_DIR="/home/developer/apps/posttls/static/"
+export POSTTLS_MEDIA_ROOT_DIR="/home/developer/apps/posttls/media/"
 
 # Set this to 'production' in production environment (see Django settings file)
 export POSTTLS_ENVIRONMENT_TYPE="development"
 
 # PostTLS settings
+export POSTTLS_NOTIFICATION_SYSADMIN_MAIL_ADDRESS="admin@localhost"
 export POSTTLS_NOTIFICATION_SENDER="postmaster@domain.com (Postmaster)"
 export POSTTLS_NOTIFICATION_SMTP_HOST="localhost"
 
@@ -88,4 +89,4 @@ Automation
 
 You can configure a cron job to process the queue once every minute. To prevent overlapping of cron jobs, use the [flock](http://linux.die.net/man/1/flock) command:
 
-    */1 * * * * . /home/hendrik/apps/posttls/env.sh && /usr/bin/flock -w 0 /home/hendrik/apps/posttls/cron.lock /home/hendrik/.virtualenvs/posttls/bin/python3 /home/hendrik/apps/posttls/posttls/posttls/manage.py process_queue >/dev/null 2>&1
+    */1 * * * * . /home/developer/apps/posttls/env.sh && /usr/bin/flock -w 0 /home/developer/apps/posttls/cron.lock /home/developer/.virtualenvs/posttls/bin/python3 /home/developer/apps/posttls/posttls/posttls/manage.py process_queue >/dev/null 2>&1
